@@ -1,0 +1,30 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: 7890
+    url: jdbc:postgresql://localhost:5432/structure
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    hibernate:
+      ddl-auto: update
+server:
+  port: 8080
+logging:
+  level:
+    root: INFO
+    org:
+      springframework:
+        web: DEBUG
+  pattern:
+    console: "\u001B[32m%d{yyyy-MM-dd HH:mm:ss}\u001B[0m \u001B[36m[%thread]\u001B[0m %highlight(%-5level) \u001B[35m%logger{36}\u001B[0m - %msg%n"
+
+
+
+
+
+

@@ -1,0 +1,50 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.6'
+    id 'io.spring.dependency-management' version '1.1.5'
+}
+
+apply from : "$rootProject.projectDir/dependencies.gradle"
+apply from : "$rootProject.projectDir/versions.gradle"
+
+group = 'org.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation libraries.springWeb
+    implementation libraries.postgresql
+    implementation libraries.jpa
+    implementation libraries.validation
+    implementation libraries.springSecurity
+    implementation libraries.jjwtApi
+    testImplementation libraries.test
+    compileOnly libraries.lombok
+    annotationProcessor libraries.lombok
+    implementation libraries.webMvc
+    runtimeOnly libraries.jjwtImpl
+    runtimeOnly libraries.jjwtJackson
+    testImplementation libraries.springSecurity
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

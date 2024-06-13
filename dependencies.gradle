@@ -1,0 +1,16 @@
+apply from: "$rootProject.projectDir/versions.gradle"
+
+ext.libraries = [lombok        : "org.projectlombok:lombok:${versions.lombok}",
+                 springWeb     : "org.springframework.boot:spring-boot-starter-web:${versions.springWeb}",
+                 postgresql    : "org.postgresql:postgresql:${versions.postgresql}",
+                 jpa           : "org.springframework.boot:spring-boot-starter-data-jpa",
+                 test          : "org.springframework.boot:spring-boot-starter-test",
+                 validation    : "org.springframework.boot:spring-boot-starter-validation",
+                 webMvc        : "org.springdoc:springdoc-openapi-starter-webmvc-ui:${versions.webMvc}",
+                 springSecurity: "org.springframework.boot:spring-boot-starter-security",
+                 jjwtApi       : "io.jsonwebtoken:jjwt-api:${versions.jjwtApi}",
+                 jjwtImpl      : "io.jsonwebtoken:jjwt-impl:${versions.jjwtImpl}",
+                 jjwtJackson   : "io.jsonwebtoken:jjwt-jackson:${versions.jjwtJackson}",
+                 jacksonBind   : "com.fasterxml.jackson.core:jackson-databind:${versions.jackson}",
+
+]

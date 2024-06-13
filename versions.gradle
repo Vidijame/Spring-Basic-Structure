@@ -1,0 +1,11 @@
+// versions.gradle
+ext.versions = [
+        lombok     : '1.18.22',
+        postgresql : '42.3.6',
+        springWeb  : '3.2.6',
+        webMvc     : '2.1.0',
+        jjwtApi    : '0.11.2',
+        jjwtImpl   : '0.11.2',
+        jjwtJackson: '0.11.5',
+        jackson    : '2.12.5',
+]
