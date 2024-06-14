@@ -5,15 +5,18 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.example.spring_basic_structure.model.entity.UserInfm;
+import org.example.spring_basic_structure.repository.UserInfmDAO;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
 import java.security.Key;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class JwtAuthenticationService implements Serializable {
@@ -21,6 +24,12 @@ public class JwtAuthenticationService implements Serializable {
 
     // Duration of token is 1 day
     private static final Integer tokenExpire =  24 * 60 * 60 * 1000;
+
+    private final UserInfmDAO userInfmDAO;
+
+    public JwtAuthenticationService(UserInfmDAO userInfmDAO) {
+        this.userInfmDAO = userInfmDAO;
+    }
 
     // Information of user
     public String extractUsername(String token) {
@@ -33,6 +42,8 @@ public class JwtAuthenticationService implements Serializable {
     }
 
     public String generateToken(Map<String, Object> extractClaims, UserDetails userDetails){
+        extractClaims.put("user", userInfmDAO.findByEml(userDetails.getUsername()).get().toResponse());
+        extractClaims.put("role", extractRoles(userDetails));
         return Jwts
                 .builder()
                 .setClaims(extractClaims)
@@ -69,7 +80,6 @@ public class JwtAuthenticationService implements Serializable {
     }
 
     // Check Token is expired
-
     public boolean isTokenExpired(String token){
         return extractExpiration(token).before(new Date());
     }
@@ -77,5 +87,12 @@ public class JwtAuthenticationService implements Serializable {
     // Extract token expired
     public Date extractExpiration(String token){
         return extractClaim(token,Claims::getExpiration);
+    }
+
+    // Extract roles from token
+    public Set<String> extractRoles(UserDetails userDetails) {
+        return userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
     }
 }

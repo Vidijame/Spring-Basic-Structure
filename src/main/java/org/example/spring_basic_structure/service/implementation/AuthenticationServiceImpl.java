@@ -48,9 +48,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .roles(roles)
                 .build();
         userInfmDAO.save(user);
+        var jwtToken = jwtAuthenticationService.generateToken(user);
         return AuthenticationRes
                 .builder()
-                .access_token(null)
+                .access_token(jwtToken)
                 .build();
     }
 

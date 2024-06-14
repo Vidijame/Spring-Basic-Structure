@@ -27,6 +27,6 @@ public class RegisterationReq {
 
     private String tel;
 
-    @Size(max = 2, message = ValidationConfig.ROLE_VALIDATION_SIZE_MESSAGE)
+    @Size(min = 1, max = 2, message = ValidationConfig.ROLE_VALIDATION_SIZE_MESSAGE)
     private Set<String> roles;
 }
