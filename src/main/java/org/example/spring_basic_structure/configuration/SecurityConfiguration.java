@@ -1,6 +1,7 @@
 package org.example.spring_basic_structure.configuration;
 
 import lombok.RequiredArgsConstructor;
+import org.example.spring_basic_structure.enumeration.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -36,6 +37,8 @@ public class SecurityConfiguration {
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "api/v1/users").permitAll()
+                        .requestMatchers(HttpMethod.GET, "api/v1/users/{id}").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "api/v1/users/{id}").hasAuthority(Role.ADMIN.name())
                         .anyRequest().authenticated()
                 ).exceptionHandling(e-> e.authenticationEntryPoint(this.authenticationEntryPoint))
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
