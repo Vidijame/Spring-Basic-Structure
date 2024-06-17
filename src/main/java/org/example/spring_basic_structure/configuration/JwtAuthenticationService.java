@@ -5,10 +5,11 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.example.spring_basic_structure.model.entity.UserInfm;
+import org.example.spring_basic_structure.exception.NotFoundExceptionClass;
 import org.example.spring_basic_structure.repository.UserInfmDAO;
+import org.example.spring_basic_structure.validation.ValidationConfig;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +21,12 @@ import java.util.stream.Collectors;
 
 @Service
 public class JwtAuthenticationService implements Serializable {
-    private static final String SECRET_KEY = "74CB6C9FA90CC74E7A7CE4038548BF76316526A9F4FA9DFF5EA53384438CB074763FB0EB954CE05256610426489072AF631963A38E33D6549004190D8F3D6951";
 
-    // Duration of token is 1 day
-    private static final Integer tokenExpire =  24 * 60 * 60 * 1000;
+    @Value("${spring.application.security.jwt}")
+    private String SECRET_KEY;
 
+    @Value("${spring.application.security.expiration}")
+    private Long tokenExpire;
     private final UserInfmDAO userInfmDAO;
 
     public JwtAuthenticationService(UserInfmDAO userInfmDAO) {
@@ -42,7 +44,13 @@ public class JwtAuthenticationService implements Serializable {
     }
 
     public String generateToken(Map<String, Object> extractClaims, UserDetails userDetails){
-        extractClaims.put("user", userInfmDAO.findByEml(userDetails.getUsername()).get().toResponse());
+        var user = userInfmDAO.findByEml(userDetails.getUsername());
+        if(user.isPresent()){
+            extractClaims.put("user", user.get().toResponse());
+        }else{
+            throw new NotFoundExceptionClass(ValidationConfig.USER_NOT_FOUND);
+        }
+
         extractClaims.put("role", extractRoles(userDetails));
         return Jwts
                 .builder()

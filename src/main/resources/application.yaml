@@ -1,4 +1,9 @@
 spring:
+  application:
+    name: Spring_Basic_Structure
+    security :
+      jwt : "74CB6C9FA90CC74E7A7CE4038548BF76316526A9F4FA9DFF5EA53384438CB074763FB0EB954CE05256610426489072AF631963A38E33D6549004190D8F3D6951"
+      expiration : 86400000
   datasource:
     driver-class-name: org.postgresql.Driver
     username: postgres

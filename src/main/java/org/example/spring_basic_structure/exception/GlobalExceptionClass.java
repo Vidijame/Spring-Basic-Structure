@@ -61,14 +61,14 @@ public class GlobalExceptionClass {
 
 
     @ExceptionHandler(BadRequestExceptionClass.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ResponseEntity<GenericExceptionClass> handleUnAuthorizedException(BadRequestExceptionClass ex) {
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<GenericExceptionClass> handleBadRequestException(BadRequestExceptionClass ex) {
         GenericExceptionClass error = GenericExceptionClass.builder()
-                .code(HttpStatus.UNAUTHORIZED.value())
-                .status(HttpStatus.UNAUTHORIZED)
+                .code(HttpStatus.BAD_REQUEST.value())
+                .status(HttpStatus.BAD_REQUEST)
                 .message(ex.getMessage())
                 .date(LocalDateTime.now())
                 .build();
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 }

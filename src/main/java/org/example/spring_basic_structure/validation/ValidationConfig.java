@@ -21,4 +21,6 @@ public class ValidationConfig {
     public final static String ROLE_VALIDATION_SIZE_MESSAGE = "maximum roles must be 2, cannot more than 2";
     public final static String UNAUTHORIZED_RESPONSE = "You're not allowed to access this resource";
 
+    public final static String USER_NOT_FOUND = "user does not exist";
+
 }
